@@ -43,5 +43,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     LittleLemonTheme {
         Greeting("Android")
+        Greeting("Android")
+        Greeting("Android")
+        Greeting("Android")
+        Greeting("Android")
+        Greeting("Android")
+        Greeting("Android")
     }
 }
