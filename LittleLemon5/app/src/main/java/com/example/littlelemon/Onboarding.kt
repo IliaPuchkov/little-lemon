@@ -29,10 +29,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
+import androidx.navigation.NavHostController
 
 
 @Composable
-fun Onboarding() {
+fun Onboarding(navController: NavHostController) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -50,6 +51,7 @@ fun Onboarding() {
                 putString("email", email)
                 putBoolean("isRegistered", true)
             }
+            navController.navigate(Home.route)
             //Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
         }
     }
@@ -119,5 +121,5 @@ fun Onboarding() {
 @Preview(showBackground = true)
 @Composable
 fun OnboardingPreview(){
-    Onboarding()
+    Onboarding(navController = NavHostController(LocalContext.current))
 }
