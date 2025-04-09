@@ -39,10 +39,11 @@ fun Onboarding(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     val sharedPreferences = LocalContext.current.getSharedPreferences("LittleLemon", Context.MODE_PRIVATE)
 
+    val context = LocalContext.current
 
     fun buttonHandler(){
         if (firstName.isBlank() || lastName.isBlank() || email.isBlank()){
-            //Toast.makeText(context, "Registration unsuccessful. Please enter all data.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Registration unsuccessful. Please enter all data.", Toast.LENGTH_SHORT).show()
             return
         }else {
             sharedPreferences.edit(commit = true) {
@@ -52,7 +53,7 @@ fun Onboarding(navController: NavHostController) {
                 putBoolean("isRegistered", true)
             }
             navController.navigate(Home.route)
-            //Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
         }
     }
 
