@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.glide.compose)
+    implementation(libs.kotlinx.serialization.json)
     kapt(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

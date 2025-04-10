@@ -18,8 +18,6 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.headers
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +26,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
-            json()
+            json(contentType = ContentType("text", "plain"))
         }
     }
 
