@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +34,7 @@ import androidx.core.content.edit
 import androidx.navigation.NavHostController
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Onboarding(navController: NavHostController) {
     var firstName by remember { mutableStateOf("") }
@@ -81,6 +84,14 @@ fun Onboarding(navController: NavHostController) {
             value = firstName,
             onValueChange = { newText -> firstName = newText },
             label = { Text("First Name") },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = Color(0xFF495E57),
+                focusedTextColor = Color(0xFF495E57),
+            ),
             modifier = Modifier.padding(16.dp)
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
@@ -90,6 +101,14 @@ fun Onboarding(navController: NavHostController) {
             value = lastName,
             onValueChange = { newText -> lastName = newText },
             label = { Text("Last Name") },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = Color(0xFF495E57),
+                focusedTextColor = Color(0xFF495E57),
+            ),
             modifier = Modifier.padding(16.dp)
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
@@ -98,6 +117,14 @@ fun Onboarding(navController: NavHostController) {
             value = email,
             onValueChange = { newText -> email = newText },
             label = { Text("Email") },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = Color(0xFF495E57),
+                focusedTextColor = Color(0xFF495E57),
+            ),
             modifier = Modifier.padding(16.dp)
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
