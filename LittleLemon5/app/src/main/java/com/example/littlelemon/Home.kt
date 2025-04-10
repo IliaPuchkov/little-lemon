@@ -1,101 +1,152 @@
 package com.example.littlelemon
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.compose.runtime.observeAsState
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+
 
 @Composable
-fun Home(navController: NavHostController) {
-    val context = LocalContext.current
-    val db = (context.applicationContext as MyApp).database
-    val menuItems by db.menuItemDao().getAll().observeAsState(emptyList())
+fun Home(navController: NavHostController, menuDao: MenuDao) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Header(navController)
+        HeroSection()
+        val menuItems by menuDao.getAll().observeAsState(emptyList())
 
-    Column {
-        Row {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "logo",
-                modifier = Modifier
-                    .width(200.dp)
-                    .fillMaxWidth()
-                    .align(Alignment.CenterVertically)
-                    .height(50.dp)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = "profile-picture",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .align(Alignment.CenterVertically)
-                    .clickable { navController.navigate(Profile.route) }
-                    .width(50.dp)
-            )
+        LazyColumn{
+            item { MenuItems(menuItems) }
         }
+    }
+}
 
-        LazyColumn(
-            modifier = Modifier.padding(10.dp),
-            state = rememberLazyListState()
+
+
+@Composable
+fun Header(navController: NavHostController) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Box(modifier = Modifier.padding(45.dp)){
+
+        }
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Little Lemon Logo",
+            modifier = Modifier
+                .weight(1f)
+                .height(80.dp)
+                .padding(vertical = 20.dp)
+                .align(Alignment.CenterVertically)
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.profile),
+            contentDescription = "Profile",
+            modifier = Modifier
+                .padding(20.dp)
+                .width(50.dp)
+                .align(Alignment.CenterVertically)
+                .clickable { navController.navigate(Profile.route) }
+        )
+    }
+}
+
+@Composable
+fun HeroSection() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF495E57)),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically // Выравнивание по вертикали
+    ) {
+        // Текстовая часть
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .weight(1f) // Используем weight, чтобы колонка занимала доступное пространство
         ) {
-            items(menuItems) { item ->
-                ItemCard(item)
-            }
-        }
-    }
-}
-
-@Composable
-fun ItemCard(item: MenuItem) {
-    Card(modifier = Modifier
-        .padding(8.dp)
-        .width(250.dp)) {
-        Row(modifier = Modifier.padding(10.dp)) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = item.title)
-                Text(text = item.description)
-                Text(text = "${item.price} $")
-            }
-
-            AsyncImage(
-                model = item.image,
-                contentDescription = "food image",
-                modifier = Modifier
-                    .padding(start = 10.dp),
-                contentScale = ContentScale.Crop
+            Text("Little Lemon", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF4CE14))
+            Text("Chicago", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFFEDEFEE))
+            Text(
+                "We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist",
+                fontSize = 16.sp,
+                color = Color(0xFFEDEFEE)
             )
         }
+
+        // Блок с изображением
+        Image(
+            painter = painterResource(id = R.drawable.hero_image),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(16.dp)
+                .width(150.dp)
+                .height(150.dp)
+                .fillMaxSize()
+        )
     }
 }
 
-@Composable
-fun AsyncImage(model: Any, contentDescription: String, modifier: Any, contentScale: Any) {
 
+@Composable
+fun MenuItems(menuItems: List<MenuItemEntity>) {
+    Column {
+        menuItems.forEach { item ->
+            MenuItemCard(item)
+        }
+    }
 }
 
-@Preview(showBackground = true)
+
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun HomePreview(){
-    Home(navController = NavHostController(LocalContext.current))
+fun MenuItemCard(item: MenuItemEntity) {
+    Card(modifier = Modifier.padding(8.dp)
+        .background(Color.White)) {
+        Row(modifier = Modifier.fillMaxWidth().background(Color.White)) {
+            Column(modifier = Modifier.padding(8.dp).weight(1f)) {
+                Text(item.title, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF333333))
+                Text(item.description, fontSize = 14.sp, color = Color(0xFF495E57))
+                Text("Price: $${item.price}", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF495E57))
+            }
+            Box(modifier = Modifier.padding(8.dp)
+                .width(150.dp)
+                .height(150.dp)
+                .align(Alignment.CenterVertically)){
+                GlideImage(
+                    model = item.image,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            }
+
+        }
+    }
 }
